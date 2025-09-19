@@ -13,3 +13,7 @@ seatnumber_field.send_keys('10001')
 # Login to Student Degrees Page
 login_button = driver.find_element(By.ID, 'ContentPlaceHolder1_LoginButton')
 login_button.click()
+
+# Getting student_name
+name_field = driver.find_element(By.ID, 'ContentPlaceHolder1_lblName')
+student_name = name_field.text
