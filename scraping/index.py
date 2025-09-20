@@ -41,3 +41,12 @@ try:
   student_totalgrade = totalgrade_field.text
 except:
   student_totalgrade = 'حجب'
+
+
+student_data = {
+  "student_name": student_name,
+  "student_seatnumber": 20010,
+  "student_totalgrade": student_totalgrade,
+  "student_degrees": regular_subjects,
+  "student_takhallofat_degrees": takhallofat_subjects,
+}
