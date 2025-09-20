@@ -23,6 +23,7 @@ for student_seatnumber in range(10001, 19999):
   if (driver.current_url != login_url):
     driver.get(login_url)
 
+  # Waiter for seatnumber_field
   WebDriverWait(driver, 10).until(
     EC.visibility_of_element_located((By.ID, "ContentPlaceHolder1_UserCode"))
   )
@@ -32,10 +33,19 @@ for student_seatnumber in range(10001, 19999):
   seatnumber_field.clear()
   seatnumber_field.send_keys(f'{student_seatnumber}')
 
+  # Waiter for login_button
+  WebDriverWait(driver, 10).until(
+    EC.element_to_be_clickable((By.ID, "ContentPlaceHolder1_LoginButton"))
+  )
+
   # Login to Student Degrees Page
   login_button = driver.find_element(By.ID, 'ContentPlaceHolder1_LoginButton')
   login_button.click()
 
+  # Wait for completed loaded page
+  WebDriverWait(driver, 30).until(
+    lambda d: d.execute_script("return document.readyState") == "complete"
+  )
 
   # If the student didn't found; continue to try the next student_seatnumber
   try:
