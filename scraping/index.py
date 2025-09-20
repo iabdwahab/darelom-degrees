@@ -9,7 +9,7 @@ driver.get("http://results.cu.edu.eg/DarOlom/login.aspx")
 # Filling seatnumber_field
 seatnumber_field = driver.find_element(By.ID, 'ContentPlaceHolder1_UserCode')
 seatnumber_field.clear()
-seatnumber_field.send_keys('10001')
+seatnumber_field.send_keys('20010')
 
 # Login to Student Degrees Page
 login_button = driver.find_element(By.ID, 'ContentPlaceHolder1_LoginButton')
@@ -30,3 +30,14 @@ takhallofat_subjects = []
 takhallofat_subjects_names_fields = driver.find_elements(By.CSS_SELECTOR, '[id^="ContentPlaceHolder1_gridLast_Label3_"]')
 
 getting_subjects_degrees(driver, By, takhallofat_subjects, takhallofat_subjects_names_fields, 'ContentPlaceHolder1_gridLast_lblgrade_', 'ContentPlaceHolder1_gridLast_lblbefore_')
+
+
+# Getting student_totalgrade
+# ##########################################################################################
+# #             When the degrees is blocked; totalgrade_field don't appear                 #
+# ##########################################################################################
+try:
+  totalgrade_field = driver.find_element(By.ID, 'ContentPlaceHolder1_lbltotalGrade')
+  student_totalgrade = totalgrade_field.text
+except:
+  student_totalgrade = 'حجب'
