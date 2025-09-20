@@ -8,9 +8,15 @@ with open("data.json", "r", encoding="utf-8") as file:
 
 # Starting Driver
 driver = webdriver.Chrome()
-driver.get("http://results.cu.edu.eg/DarOlom/login.aspx")
+
+login_url = "http://results.cu.edu.eg/DarOlom/login.aspx"
+driver.get(login_url)
 
 for student_seatnumber in range(10001, 19999):
+
+  # Adding a check for URL of the login page
+  if (driver.current_url != login_url):
+    driver.get(login_url)
 
   # Filling seatnumber_field
   seatnumber_field = driver.find_element(By.ID, 'ContentPlaceHolder1_UserCode')
