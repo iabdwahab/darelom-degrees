@@ -1,7 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from functions import getting_subjects_degrees
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import json
+
 
 with open("data.json", "r", encoding="utf-8") as file:
   data_json_file = json.load(file)
@@ -17,6 +20,10 @@ for student_seatnumber in range(10001, 19999):
   # Adding a check for URL of the login page
   if (driver.current_url != login_url):
     driver.get(login_url)
+
+  WebDriverWait(driver, 10).until(
+    EC.visibility_of_element_located((By.ID, "ContentPlaceHolder1_UserCode"))
+  )
 
   # Filling seatnumber_field
   seatnumber_field = driver.find_element(By.ID, 'ContentPlaceHolder1_UserCode')
