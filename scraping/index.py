@@ -1,6 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from functions import getting_subjects_degrees
+import json
+
+with open("data.json", "r", encoding="utf-8") as file:
+  data_json_file = json.load(file)
 
 # Starting Driver
 driver = webdriver.Chrome()
@@ -52,6 +56,11 @@ for student_seatnumber in range(10001, 19999):
     "student_degrees": regular_subjects,
     "student_takhallofat_degrees": takhallofat_subjects,
   }
+
+  # Write the data on data.json file with the new student who added
+  data_json_file.append(student_data)
+  with open("data.json", "w", encoding="utf-8") as file:
+    json.dump(data_json_file, file, ensure_ascii=False, indent=2)
 
   # Getting the whole degrees html page
   degrees_html_source = driver.page_source
