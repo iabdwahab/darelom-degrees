@@ -50,3 +50,9 @@ student_data = {
   "student_degrees": regular_subjects,
   "student_takhallofat_degrees": takhallofat_subjects,
 }
+
+# Getting the whole degrees html page
+degrees_html_source = driver.page_source
+# Create a HTML file with the seatnumber of the student and append data to it
+with open(f"./students_pages/20010.html", "w", encoding="utf-8") as file:
+  file.write(degrees_html_source)
