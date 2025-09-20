@@ -6,53 +6,55 @@ from functions import getting_subjects_degrees
 driver = webdriver.Chrome()
 driver.get("http://results.cu.edu.eg/DarOlom/login.aspx")
 
-# Filling seatnumber_field
-seatnumber_field = driver.find_element(By.ID, 'ContentPlaceHolder1_UserCode')
-seatnumber_field.clear()
-seatnumber_field.send_keys('20010')
+for student_seatnumber in range(10001, 19999):
 
-# Login to Student Degrees Page
-login_button = driver.find_element(By.ID, 'ContentPlaceHolder1_LoginButton')
-login_button.click()
+  # Filling seatnumber_field
+  seatnumber_field = driver.find_element(By.ID, 'ContentPlaceHolder1_UserCode')
+  seatnumber_field.clear()
+  seatnumber_field.send_keys(f'{student_seatnumber}')
 
-# Getting student_name
-name_field = driver.find_element(By.ID, 'ContentPlaceHolder1_lblName')
-student_name = name_field.text
+  # Login to Student Degrees Page
+  login_button = driver.find_element(By.ID, 'ContentPlaceHolder1_LoginButton')
+  login_button.click()
 
-# Getting Regular Subjects
-regular_subjects = [] # [{ subject_name: "", subject_degree: "", subject_degree_before_compassion: "" }, ...]
-regular_subjects_names_fields = driver.find_elements(By.CSS_SELECTOR, '[id^="ContentPlaceHolder1_gridTerm1_Label3_"]')
+  # Getting student_name
+  name_field = driver.find_element(By.ID, 'ContentPlaceHolder1_lblName')
+  student_name = name_field.text
 
-getting_subjects_degrees(driver, By, regular_subjects, regular_subjects_names_fields, 'ContentPlaceHolder1_gridTerm1_lblgrade_', 'ContentPlaceHolder1_gridTerm1_lblbefore_')
+  # Getting Regular Subjects
+  regular_subjects = [] # [{ subject_name: "", subject_degree: "", subject_degree_before_compassion: "" }, ...]
+  regular_subjects_names_fields = driver.find_elements(By.CSS_SELECTOR, '[id^="ContentPlaceHolder1_gridTerm1_Label3_"]')
 
-# Getting Takhallofat Subjects
-takhallofat_subjects = []
-takhallofat_subjects_names_fields = driver.find_elements(By.CSS_SELECTOR, '[id^="ContentPlaceHolder1_gridLast_Label3_"]')
+  getting_subjects_degrees(driver, By, regular_subjects, regular_subjects_names_fields, 'ContentPlaceHolder1_gridTerm1_lblgrade_', 'ContentPlaceHolder1_gridTerm1_lblbefore_')
 
-getting_subjects_degrees(driver, By, takhallofat_subjects, takhallofat_subjects_names_fields, 'ContentPlaceHolder1_gridLast_lblgrade_', 'ContentPlaceHolder1_gridLast_lblbefore_')
+  # Getting Takhallofat Subjects
+  takhallofat_subjects = []
+  takhallofat_subjects_names_fields = driver.find_elements(By.CSS_SELECTOR, '[id^="ContentPlaceHolder1_gridLast_Label3_"]')
 
-
-# Getting student_totalgrade
-# ##########################################################################################
-# #             When the degrees is blocked; totalgrade_field don't appear                 #
-# ##########################################################################################
-try:
-  totalgrade_field = driver.find_element(By.ID, 'ContentPlaceHolder1_lbltotalGrade')
-  student_totalgrade = totalgrade_field.text
-except:
-  student_totalgrade = 'حجب'
+  getting_subjects_degrees(driver, By, takhallofat_subjects, takhallofat_subjects_names_fields, 'ContentPlaceHolder1_gridLast_lblgrade_', 'ContentPlaceHolder1_gridLast_lblbefore_')
 
 
-student_data = {
-  "student_name": student_name,
-  "student_seatnumber": 20010,
-  "student_totalgrade": student_totalgrade,
-  "student_degrees": regular_subjects,
-  "student_takhallofat_degrees": takhallofat_subjects,
-}
+  # Getting student_totalgrade
+  # ##########################################################################################
+  # #             When the degrees is blocked; totalgrade_field don't appear                 #
+  # ##########################################################################################
+  try:
+    totalgrade_field = driver.find_element(By.ID, 'ContentPlaceHolder1_lbltotalGrade')
+    student_totalgrade = totalgrade_field.text
+  except:
+    student_totalgrade = 'حجب'
 
-# Getting the whole degrees html page
-degrees_html_source = driver.page_source
-# Create a HTML file with the seatnumber of the student and append data to it
-with open(f"./students_pages/20010.html", "w", encoding="utf-8") as file:
-  file.write(degrees_html_source)
+
+  student_data = {
+    "student_name": student_name,
+    "student_seatnumber": student_seatnumber,
+    "student_totalgrade": student_totalgrade,
+    "student_degrees": regular_subjects,
+    "student_takhallofat_degrees": takhallofat_subjects,
+  }
+
+  # Getting the whole degrees html page
+  degrees_html_source = driver.page_source
+  # Create a HTML file with the seatnumber of the student and append data to it
+  with open(f"./students_pages/{student_seatnumber}.html", "w", encoding="utf-8") as file:
+    file.write(degrees_html_source)
