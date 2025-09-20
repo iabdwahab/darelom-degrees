@@ -67,3 +67,5 @@ for student_seatnumber in range(10001, 19999):
   # Create a HTML file with the seatnumber of the student and append data to it
   with open(f"./students_pages/{student_seatnumber}.html", "w", encoding="utf-8") as file:
     file.write(degrees_html_source)
+
+  driver.back()
