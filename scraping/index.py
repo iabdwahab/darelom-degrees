@@ -17,7 +17,8 @@ driver.get(login_url)
 
 for student_seatnumber in range(10001, 19999):
 
-  print(f"{student_seatnumber} => Started!")
+  with open("logs.txt", "a", encoding="utf-8") as file:
+    file.write(f"{student_seatnumber} => Started! ⬜ || ")
 
   # Adding a check for URL of the login page
   if (driver.current_url != login_url):
@@ -53,6 +54,8 @@ for student_seatnumber in range(10001, 19999):
     name_field = driver.find_element(By.ID, 'ContentPlaceHolder1_lblName')
     student_name = name_field.text
   except:
+    with open("logs.txt", "a", encoding="utf-8") as file:
+      file.write(f"{student_seatnumber} => Skipped! 🟥\n")
     continue
 
   # Getting Regular Subjects
@@ -98,5 +101,6 @@ for student_seatnumber in range(10001, 19999):
   with open(f"./students_pages/{student_seatnumber}.html", "w", encoding="utf-8") as file:
     file.write(degrees_html_source)
 
-  print(f"{student_seatnumber} => Finished Successfully!")
+  with open("logs.txt", "a", encoding="utf-8") as file:
+    file.write(f"{student_seatnumber} => Succeed! 🟩\n")
   driver.back()
