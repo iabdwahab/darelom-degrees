@@ -21,9 +21,14 @@ for student_seatnumber in range(10001, 19999):
   login_button = driver.find_element(By.ID, 'ContentPlaceHolder1_LoginButton')
   login_button.click()
 
-  # Getting student_name
-  name_field = driver.find_element(By.ID, 'ContentPlaceHolder1_lblName')
-  student_name = name_field.text
+
+  # If the student didn't found; continue to try the next student_seatnumber
+  try:
+    # Getting student_name
+    name_field = driver.find_element(By.ID, 'ContentPlaceHolder1_lblName')
+    student_name = name_field.text
+  except:
+    continue
 
   # Getting Regular Subjects
   regular_subjects = [] # [{ subject_name: "", subject_degree: "", subject_degree_before_compassion: "" }, ...]
