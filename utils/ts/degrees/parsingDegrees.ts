@@ -1,4 +1,4 @@
-import { ParsedDegreesStudent, Student } from './interfaces/parsingDegrees';
+import { ParsedDegreesStudent, Student } from '../interfaces/parsingDegrees';
 
 export function parseDegree(degree: string): number {
   // Degree has 3 shapes
