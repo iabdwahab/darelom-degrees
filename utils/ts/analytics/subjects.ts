@@ -7,8 +7,11 @@ interface AnalyticedSubject {
     subject_succeed_students_count: number;
     subject_succeed_students_percentage: string;
   };
-  // String as I will use it as number.toFixed(2)
-  subject_average_degree: string;
+  subject_degree: {
+    total_degree: number;
+    // String as I will use it as number.toFixed(2)
+    average_degree: string;
+  };
 }
 
 export function getSubjectsAnalytics(students: ParsedDegreesStudent[]) {
@@ -33,6 +36,9 @@ export function getSubjectsAnalytics(students: ParsedDegreesStudent[]) {
         // Increase subject_students_count by 1
         analyticedSubjectsList[subjectIndex].subject_students.subject_students_count += 1;
 
+        // increase subject's list's "Subject Total Degree" by the student's degree in this subject
+        analyticedSubjectsList[subjectIndex].subject_degree.total_degree += studentSubject.subject_degree;
+
         // Check if student was succeed
         if (isStudentSucceed) {
           // Increase subject_succeed_students_count by 1
@@ -50,7 +56,10 @@ export function getSubjectsAnalytics(students: ParsedDegreesStudent[]) {
             subject_succeed_students_count: isStudentSucceed ? 1 : 0,
             subject_succeed_students_percentage: '',
           },
-          subject_average_degree: '',
+          subject_degree: {
+            total_degree: studentSubject.subject_degree,
+            average_degree: '',
+          },
         });
       }
     });
@@ -63,6 +72,14 @@ export function getSubjectsAnalytics(students: ParsedDegreesStudent[]) {
     const studentsSucceedPercentage = (studentsSucceedCount * 100) / studentsCount;
 
     subject.subject_students.subject_succeed_students_percentage = studentsSucceedPercentage.toFixed(2);
+  });
+
+  /* Calculate subject_average_degree */
+  analyticedSubjectsList.forEach((subject) => {
+    const subjectTotalDegree = subject.subject_degree.total_degree;
+    const subjectStudentsCount = subject.subject_students.subject_students_count;
+
+    subject.subject_degree.average_degree = (subjectTotalDegree / subjectStudentsCount).toFixed(2);
   });
 
   return analyticedSubjectsList;
