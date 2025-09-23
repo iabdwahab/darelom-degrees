@@ -56,5 +56,14 @@ export function getSubjectsAnalytics(students: ParsedDegreesStudent[]) {
     });
   });
 
+  // Calculate subject_succeed_students_percentage
+  analyticedSubjectsList.forEach((subject) => {
+    const studentsCount = subject.subject_students.subject_students_count;
+    const studentsSucceedCount = subject.subject_students.subject_succeed_students_count;
+    const studentsSucceedPercentage = (studentsSucceedCount * 100) / studentsCount;
+
+    subject.subject_students.subject_succeed_students_percentage = studentsSucceedPercentage.toFixed(2);
+  });
+
   return analyticedSubjectsList;
 }
