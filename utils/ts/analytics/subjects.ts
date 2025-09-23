@@ -3,6 +3,7 @@ import { Student } from '../interfaces/parsingDegrees';
 interface TotalGradeObject {
   grade_name: string;
   grade_count: number;
+  grade_count_percentage: string;
 }
 
 export function getTotalGradeAnalytics(students: Student[]) {
@@ -23,12 +24,22 @@ export function getTotalGradeAnalytics(students: Student[]) {
       totalGradesList.push({
         grade_name: studentTotalGrade,
         grade_count: 1,
+        grade_count_percentage: '',
       });
 
       // When total grade founded; increase its grade_count
     } else {
       totalGradesList[totalGradeIndex].grade_count += 1;
     }
+  });
+
+  /* Calculating Percentage */
+  const studentsCount = students.length;
+
+  totalGradesList.forEach((totalGrade) => {
+    const totalGradePercentage = (totalGrade.grade_count * 100) / studentsCount;
+
+    totalGrade.grade_count_percentage = totalGradePercentage.toFixed(2);
   });
 
   return totalGradesList;

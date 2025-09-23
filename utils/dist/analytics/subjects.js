@@ -13,12 +13,19 @@ export function getTotalGradeAnalytics(students) {
             totalGradesList.push({
                 grade_name: studentTotalGrade,
                 grade_count: 1,
+                grade_count_percentage: '',
             });
             // When total grade founded; increase its grade_count
         }
         else {
             totalGradesList[totalGradeIndex].grade_count += 1;
         }
+    });
+    /* Calculating Percentage */
+    const studentsCount = students.length;
+    totalGradesList.forEach((totalGrade) => {
+        const totalGradePercentage = (totalGrade.grade_count * 100) / studentsCount;
+        totalGrade.grade_count_percentage = totalGradePercentage.toFixed(2);
     });
     return totalGradesList;
 }
